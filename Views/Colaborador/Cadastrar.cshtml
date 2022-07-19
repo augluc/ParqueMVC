@@ -1,0 +1,19 @@
+﻿
+@model Colaborador
+@{
+    ViewData["Title"] = "Cadastrar Colaborador";
+}
+
+<h1 class="justify-content-center">Cadastrar Colaborador</h1>
+
+<hr />
+
+<form asp-action="Cadastrar">
+    <partial name="_Form" />
+
+    <input type="submit" value="Cadastrar" class="btn btn-success" />
+    <input type="submit" value="Cancelar" asp-controller="colaborador" asp-action="index" class="btn btn-danger" />
+
+
+
+</form>

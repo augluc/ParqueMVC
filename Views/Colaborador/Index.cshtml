@@ -1,0 +1,72 @@
+﻿@model List<Colaborador>
+@{
+    ViewData["Title"] = "Lista de Colaboradores";
+}
+
+<h1>Lista de Colaboradores</h1>
+
+<msg texto="@TempData["msg"]" class="my-3 alert alert-warning"></msg>
+
+<hr />
+
+
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Especialidade</th>
+        <th>Data de Contratação</th>
+        <th>Tipo de Contratação</th>
+        <th>Valor</th>
+        <th>Ações</th>
+    </tr>
+    @foreach(Colaborador c in Model)
+    {
+        <tr>
+            <td>@c.ColaboradorId</td>
+            <td>@c.Nome</td>
+            <td>@(c.Especialidade)</td>
+            <td>@c.ContratoTrabalho.DataContratacao.ToShortDateString()</td>
+            <td>@c.ContratoTrabalho.Tipo</td>
+            <td>@c.ContratoTrabalho.ValorSalario</td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@c.ColaboradorId" class="btn btn-sm btn-primary">Editar</a>
+
+                <!-- Button trigger modal -->
+                <button onclick="idBrinquedo.value = @c.ColaboradorId" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+                  Remover
+                </button>
+
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Remover Colaborador</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        Você tem certeza que deseja remover o colaborador?
+        Essa mudança sera permanente!
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <form asp-action="Remover">
+            <input type="hidden" name="id" id="idColaborador"/>
+            <input type="submit" value="Remover" class="btn btn-danger"/>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+

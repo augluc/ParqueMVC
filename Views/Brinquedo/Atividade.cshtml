@@ -1,0 +1,46 @@
+﻿@model Brinquedo
+@{
+    ViewData["Title"] = "Atividade";
+}
+
+<h1>@Model.Nome <span class="badge  badge-primary rounded-pill">@Model.Tipo</span></h1>
+<hr />
+<msg texto="@TempData["msg"]"></msg>
+<table class="table table-striped">
+    <tr>
+        <th>Valor</th>
+        <th>Data de Fabricação</th>
+        <th>Tipo</th>
+        <th>Precisa de Acompanhante</th>
+        <th>Manutenção</th>
+    </tr>
+    <tr>
+        <th>@Model.Valor</th>
+        <th>@Model.DataFabricacao.ToShortDateString()</th>
+        <th>@Model.Tipo</th>
+        <th>@(Model.PrecisaAcompanhante?"Sim":"Não")</th>
+        <th>@Model.Manutencao?.Nome</th>
+    </tr>
+</table>
+
+<hr />
+
+<h2>Colaborador</h2>
+<form asp-action="Adicionar" class="form-inline">
+    <input type="hidden" name="brinquedoId" value="@Model.BrinquedoId" />
+    <select class="form-control mr-2" name="colaboradorId" asp-items="@ViewBag.colaboradoresSelectList">
+        <option>
+            Selecione
+        </option>
+    </select>
+    <input type="datetime-local" name="data" class="form-control mr-2" />
+    <input type="submit" value="Adicionar" class="btn btn-outline-secondary" />
+</form>
+
+<ul class="list-group mt-2">
+    @foreach (BrinquedoColaborador bc in ViewBag.colaborador)
+    {
+        <li class="list-group-item">@bc.Colaborador.Nome - @bc.Data</li>
+    }
+
+</ul>

@@ -1,0 +1,89 @@
+﻿@model List<Brinquedo>
+@{
+    ViewData["Title"] = "Atrações";
+}
+
+<h1 >Lista de Atrações</h1>
+<hr />
+
+<msg texto="@TempData["msg"]" class="my-3 alert alert-warning"></msg>
+<msg texto="@TempData["msgDel"]" class="my-3 alert alert-danger"></msg>
+
+<form class="form-inline mb-3">
+    <input type="text" class="form-control mr-2" name="nomePesquisa" placeholder="Digite para buscar..." />
+
+    <select class="form-control mr-2" name="tipoPesquisa" asp-items="@Html.GetEnumSelectList<Tipo>()">
+        <option>Tipo</option>
+    </select>
+
+    <input type ="submit" value="Pesquisar" class="btn btn-primary btn-sm"/>
+</form>
+
+@if (Model.Count == 0)
+{
+    <msg texto="Nehuma atração encontrada!" class="my-3 alert alert-secondary"></msg>
+}
+
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Data de Fabricação</th>
+        <th>Valor</th>
+        <th>Tipo</th>
+        <th>Precisa de Acompanhante</th>
+        <th>Manutençao</th>
+        <th>Ações</th>
+    </tr>
+    @foreach(Brinquedo b in Model)
+    {
+        <tr>
+            <td>@b.BrinquedoId</td>
+            <td>@b.Nome</td>
+            <td>@b.DataFabricacao.ToShortDateString()</td>
+            <td>R$ @b.Valor</td>
+            <td>@b.Tipo</td>
+            <td>@(b.PrecisaAcompanhante?"Sim":"Não")</td>
+            <td>@b.Manutencao?.Nome</td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@b.BrinquedoId" class="btn btn-sm btn-primary">Editar</a>
+
+                <!-- Button trigger modal -->
+                <button onclick="idBrinquedo.value = @b.BrinquedoId" type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+                  Remover
+                </button>
+                <a asp-action="Atividade" asp-route-id="@b.BrinquedoId" class="btn btn-sm btn-secondary">Atividade</a>
+
+            </td>
+        </tr>
+    }
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Remover Atração</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        Você tem certeza que deseja remover a atração?
+        Essa mudança sera permanente!
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <form asp-action="Remover">
+            <input type="hidden" name="id" id="idBrinquedo"/>
+            <input type="submit" value="Remover" class="btn btn-danger"/>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+
